@@ -1,0 +1,18 @@
+000 09 110 0B 00C  #carrega o valor de x  para MQ   # x.g
+001 0A 000 21 00C  #loadMQ  #guarda o valor de gx 
+002 15 000 21 00D  # g.x/2  #guarda k=y/2 
+003 01 00C 0C 00D  #carrega y  #y/k   
+004 0A 000 05 00D  #loadMQ  #y/k+k  
+005 15 000 21 00D  #(y/k+k)/2   #guarda o k atual
+006 01 00A 06 00B  #carrega iterações   #iterações-1
+007 21 00A 0F 003  #guarda iterações    #se iterações >=0, pula de volta
+
+008 01 00D 0D 400
+
+00A 00 00 00 00 09  #contador de iterações (inicia em 9)
+00B 00 00 00 00 01  #constante 1
+00C 00 00 00 00 0A  # constante g (10), que em seguida se torna g.x (y)
+00D 00 00 00 00 00  #guarda o valor atual de k
+00E 00 00 00 00 00 #guarda o valor de y/k 
+
+110 00 00 00 6E 92    #entrada x

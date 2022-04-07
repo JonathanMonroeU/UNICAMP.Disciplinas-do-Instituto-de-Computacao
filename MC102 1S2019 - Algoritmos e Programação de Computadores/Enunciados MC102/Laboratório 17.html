@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html -->
+<html class="gr__susy_ic_unicamp_br"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Laboratório 17</title>        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./Laboratório 17_files/css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./Laboratório 17_files/github-markdown.css">
+    <style>
+        .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+        font-family: 'Noto Sans', sans-serif;
+        }
+        .markdown-body h6 { margin-bottom: 0; }
+        .markdown-body h6 + ul li {
+        display: inline-block;
+        width: 100%;
+        max-width: 426px;
+        vertical-align: top;
+        }
+        .markdown-body h6 + ul li pre {
+          max-height: 400px;
+        }
+    </style>
+</head>
+<body data-gr-c-s-loaded="true">
+    <article class="markdown-body">
+<h3>
+<a id="user-content-instituto-de-computação---unicamp" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#instituto-de-computa%C3%A7%C3%A3o---unicamp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Instituto de Computação - Unicamp</h3>
+<p>MC102 - Algoritmos e Programação de Computadores</p>
+<h1>
+<a id="user-content-laboratório-id---title" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#laborat%C3%B3rio-id---title" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Laboratório 17 - Banco de Dados Geográfico</h1><p>Prazo de entrega: <strong>15/06/2019 23:59:59</strong></p><p>Peso: <strong>2</strong></p>
+<p><em>Professor:</em> Eduardo Candido Xavier<br>
+<em>Professor:</em> Luiz Fernando Bittencourt</p>
+<hr>
+<h2>
+<a id="user-content-descrição" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#descri%C3%A7%C3%A3o" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Descrição</h2>
+<p>Você já deve ter usado serviços como o Google Maps. Estes serviços possuem extensos bancos de dados com as mais diversas informações geográficas. Neste laboratório você irá implementar um versão simplificada de um banco de dados geográfico que conterá informações sobre cidades. Nesta simplificação, iremos considerar uma versão planificada da Terra, onde qualquer ponto pode ser representando por uma par de coordenadas <code>(x, y)</code> no plano.</p>
+<p>No nosso banco de dados, para cada cidade iremos armazenar as seguintes informações:</p>
+<ul>
+<li>Coordenadas <code>(x, y)</code> de um ponto representando a localização da cidade;</li>
+<li>Faixa de CEPs atribuídas àquela cidade, e.g. 12300-000 - 12300-130 (o que inclui os CEPs 12300-001, 12300-002, ..., 12300-129);</li>
+<li>Número de habitantes (em milhares de pessoas).</li>
+</ul>
+<p>Com as coordenadas definidas acima, podemos realizar consultas baseadas na distância entre cidades como no exemplo abaixo. Neste exemplo, gostaríamos de encontrar todas as cidades que estão num raio de até 50km da cidade 0, neste caso a própria cidade 0 e as cidades 1, 3 e 4.</p>
+<p><a href="./Laboratório 17_files/img1.png" target="_blank" rel="noopener noreferrer"><img src="./Laboratório 17_files/img1.png" alt="Exemplo consulta" style="max-width:100%;"></a></p>
+<p>O objetivo deste laboratório é criar uma biblioteca de funções em Python capaz de realizar consultas no banco de dados geográfico definido acima.</p>
+<p>O registro <code>Ponto</code> representa uma coordenada no plano. Assumimos que os valores são reais e as medidas estão em Km. O registro <code>Cidade</code> representa os dados de uma cidade incluindo sua localização (<code>coordenadas</code>), a faixa de CEPs que ocorrem na cidade (de <code>inicioCep</code> até <code>fimCep</code>) e finalmente o número de habitantes na cidade ( <code>numHabitantes</code>).</p>
+<p>Em Python usaremos as seguintes classes para representar as informações de uma cidade:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-k">class</span> <span class="pl-en">Ponto</span>:
+    <span class="pl-k">def</span> <span class="pl-c1">__init__</span>(<span class="pl-smi"><span class="pl-smi">self</span></span>, <span class="pl-smi">x</span>, <span class="pl-smi">y</span>):
+        <span class="pl-c1">self</span>.x <span class="pl-k">=</span> x
+        <span class="pl-c1">self</span>.y <span class="pl-k">=</span> y
+
+<span class="pl-k">class</span> <span class="pl-en">Cidade</span>:
+    <span class="pl-k">def</span> <span class="pl-c1">__init__</span>(<span class="pl-smi"><span class="pl-smi">self</span></span>, <span class="pl-smi">coordenadas</span>, <span class="pl-smi">inicioCEP</span>, <span class="pl-smi">fimCEP</span>, <span class="pl-smi">numHabitantes</span>):
+        <span class="pl-c1">self</span>.coordenadas <span class="pl-k">=</span> coordenadas
+        <span class="pl-c1">self</span>.inicioCEP <span class="pl-k">=</span> inicioCEP
+        <span class="pl-c1">self</span>.fimCEP <span class="pl-k">=</span> fimCEP
+        <span class="pl-c1">self</span>.numHabitantes <span class="pl-k">=</span> numHabitantes</pre></div>
+<p>A classe <code>Ponto</code> representa uma coordenada no plano. Assumimos que os valores são reais e as medidas estão em Km. A classe <code>Cidade</code> representa os dados de uma cidade incluindo sua localização (<code>coordenadas</code>), a faixa de CEPs que ocorrem na cidade (de <code>inicioCep</code> até <code>fimCep</code>) e finalmente o número de habitantes na cidade ( <code>numHabitantes</code>).</p>
+<p>Você deve implementar funções que realizam as seguintes operações:</p>
+<ul>
+<li>
+<p><strong>Consulta cidade por CEP:</strong> dado um CEP, deve-se procurar no banco de dados a cidade que contém este CEP.</p>
+</li>
+<li>
+<p><strong>Consulta cidades por raio:</strong> dada uma cidade de referência e uma distância máxima, deve-se buscar todas as cidades que estão dentro do raio desejado assumindo-se a cidade de referência como centro.</p>
+</li>
+<li>
+<p><strong>Total de habitantes:</strong> dada uma cidade de referência e uma distância máxima de raio, deve-se calcular qual é o total de habitantes de todas as cidades que estão dentro do raio definido, considerando-se a cidade de referência como centro.</p>
+</li>
+<li>
+<p><strong>Mediana da população:</strong> dada uma cidade de referência e uma distância máxima, deve-se calcular qual é a mediana do número de habitantes das cidades dentro deste raio. Iremos considerar que a mediana de <code>n</code> elementos (ordenados) será o elemento intermediário se <code>n</code> for ímpar, e a média dos elementos intermediários caso contrário.</p>
+</li>
+</ul>
+<p><em>Obs.:</em> Note que a função para calcular a distância euclidiana entre dois pontos já está implementada. Você <em>não</em> deve modificar esta função.</p>
+<h4></h4>
+<p>A descrição geral dos parâmetros de entrada e saída das funções estão descritos nos comentários dos protótipos das funções, que são fornecidos a seguir:</p>
+<p>Linguagem Python 3:</p>
+<div class="highlight highlight-source-python"><pre><span class="pl-c"><span class="pl-c">#</span>!/usr/bin/env python3</span>
+
+<span class="pl-k">import</span> math
+
+<span class="pl-c"><span class="pl-c">#</span> Laboratorio 17 - Banco de Dados Geografico</span>
+<span class="pl-c"><span class="pl-c">#</span> Nome:</span>
+<span class="pl-c"><span class="pl-c">#</span> RA:</span>
+
+<span class="pl-k">class</span> <span class="pl-en">Ponto</span>:
+    <span class="pl-k">def</span> <span class="pl-c1">__init__</span>(<span class="pl-smi"><span class="pl-smi">self</span></span>, <span class="pl-smi">x</span>, <span class="pl-smi">y</span>):
+        <span class="pl-c1">self</span>.x <span class="pl-k">=</span> x
+        <span class="pl-c1">self</span>.y <span class="pl-k">=</span> y
+
+<span class="pl-k">class</span> <span class="pl-en">Cidade</span>:
+    <span class="pl-k">def</span> <span class="pl-c1">__init__</span>(<span class="pl-smi"><span class="pl-smi">self</span></span>, <span class="pl-smi">coordenadas</span>, <span class="pl-smi">inicioCEP</span>, <span class="pl-smi">fimCEP</span>, <span class="pl-smi">numHabitantes</span>):
+        <span class="pl-c1">self</span>.coordenadas <span class="pl-k">=</span> coordenadas
+        <span class="pl-c1">self</span>.inicioCEP <span class="pl-k">=</span> inicioCEP
+        <span class="pl-c1">self</span>.fimCEP <span class="pl-k">=</span> fimCEP
+        <span class="pl-c1">self</span>.numHabitantes <span class="pl-k">=</span> numHabitantes
+
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Funcao: distancia</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Parametros:</span>
+<span class="pl-c"><span class="pl-c">#</span>   a, b: pontos</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Retorno:</span>
+<span class="pl-c"><span class="pl-c">#</span>   A distancia euclidiana entre a e b.</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-k">def</span> <span class="pl-en">distancia</span>(<span class="pl-smi">c1</span>, <span class="pl-smi">c2</span>):
+    <span class="pl-k">return</span> <span class="pl-c1">int</span>(<span class="pl-c1">100</span> <span class="pl-k">*</span> math.sqrt((c1.x <span class="pl-k">-</span> c2.x)<span class="pl-k">**</span><span class="pl-c1">2</span> <span class="pl-k">+</span> (c1.y <span class="pl-k">-</span> c2.y)<span class="pl-k">**</span><span class="pl-c1">2</span>)) <span class="pl-k">/</span> <span class="pl-c1">100.0</span>
+
+<span class="pl-c"><span class="pl-c">#</span> Funcao: consulta_cidade_por_cep</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Parametros:</span>
+<span class="pl-c"><span class="pl-c">#</span>   cidades: lista de cidades (base de dados) </span>
+<span class="pl-c"><span class="pl-c">#</span>       cep: CEP desejado </span>
+<span class="pl-c"><span class="pl-c">#</span> </span>
+<span class="pl-c"><span class="pl-c">#</span> Retorno:</span>
+<span class="pl-c"><span class="pl-c">#</span>   O indice da cidade que contem o CEP desejado ou None caso não haja tal cidade.   </span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-k">def</span> <span class="pl-en">consulta_cidade_por_cep</span>(<span class="pl-smi">cidades</span>, <span class="pl-smi">cep</span>):
+    <span class="pl-c"><span class="pl-c">#</span> Implementar a funcao e trocar o valor de retorno </span>
+    <span class="pl-k">return</span> <span class="pl-c1">None</span>
+
+<span class="pl-c"><span class="pl-c">#</span> Funcao: consulta_cidades_por_raio</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Parametros:</span>
+<span class="pl-c"><span class="pl-c">#</span>            cidades: lista de cidades (base de dados) </span>
+<span class="pl-c"><span class="pl-c">#</span>   cidadeReferencia: indice da cidade referencia (centro da circunferencia)</span>
+<span class="pl-c"><span class="pl-c">#</span>               raio: raio da busca</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Retorno:</span>
+<span class="pl-c"><span class="pl-c">#</span>   Lista dos indices das cidades que estao contidas no raio de busca (incluindo</span>
+<span class="pl-c"><span class="pl-c">#</span>   a cidade referencia) *ordenados pelas respectivas distancias da cidade referencia*.</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-k">def</span> <span class="pl-en">consulta_cidades_por_raio</span>(<span class="pl-smi">cidades</span>, <span class="pl-smi">cidadeReferencia</span>, <span class="pl-smi">raio</span>):
+    <span class="pl-c"><span class="pl-c">#</span> Implementar a funcao e trocar o valor de retorno </span>
+    <span class="pl-k">return</span> <span class="pl-c1">None</span>
+
+<span class="pl-c"><span class="pl-c">#</span> Funcao: populacao_total</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Parametros:</span>
+<span class="pl-c"><span class="pl-c">#</span>            cidades: lista de cidades (base de dados) </span>
+<span class="pl-c"><span class="pl-c">#</span>   cidadeReferencia: indice da cidade referencia (centro da circunferencia)</span>
+<span class="pl-c"><span class="pl-c">#</span>               raio: raio da busca</span>
+<span class="pl-c"><span class="pl-c">#</span>          </span>
+<span class="pl-c"><span class="pl-c">#</span> Retorno:</span>
+<span class="pl-c"><span class="pl-c">#</span>   O numero de habitantes das cidades que estao contidas no raio de busca</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-k">def</span> <span class="pl-en">populacao_total</span>(<span class="pl-smi">cidades</span>, <span class="pl-smi">cidadeReferencia</span>, <span class="pl-smi">raio</span>):
+    <span class="pl-c"><span class="pl-c">#</span> Implementar a funcao e trocar o valor de retorno </span>
+    <span class="pl-k">return</span> <span class="pl-c1">None</span>
+
+<span class="pl-c"><span class="pl-c">#</span> Funcao: mediana_da_populacao</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Parametros:</span>
+<span class="pl-c"><span class="pl-c">#</span>            cidades: lista de cidades (base de dados) </span>
+<span class="pl-c"><span class="pl-c">#</span>   cidadeReferencia: indice da cidade referencia (centro da circunferencia)</span>
+<span class="pl-c"><span class="pl-c">#</span>               raio: raio da busca</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-c"><span class="pl-c">#</span> Retorno:</span>
+<span class="pl-c"><span class="pl-c">#</span>   Mediana do numero de habitantes das cidades que estao contidas no raio de busca</span>
+<span class="pl-c"><span class="pl-c">#</span></span>
+<span class="pl-k">def</span> <span class="pl-en">mediana_da_populacao</span>(<span class="pl-smi">cidades</span>, <span class="pl-smi">cidadeReferencia</span>, <span class="pl-smi">raio</span>):
+    <span class="pl-c"><span class="pl-c">#</span> Implementar a funcao e trocar o valor de retorno </span>
+    <span class="pl-k">return</span> <span class="pl-c1">None</span>
+
+</pre></div>
+<h2>
+<a id="user-content-submissão" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#submiss%C3%A3o" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Submissão</h2>
+<p>Neste laboratório você não precisará se preocupar em ler a
+entrada a partir da entrada padrão, nem em escrever a saída.
+Seu trabalho é apenas implementar as funções descritas. A
+função <code>main()</code> que é fornecida no arquivo <code>lab17_main.py</code>se encarrega dessa parte.</p>
+<p>Você também <strong>não deve</strong> submeter o arquivo <code>lab17_main.py</code>para o <em>SuSy</em>, somente o arquivo <code>lab17.py</code>.</p><p>As seções abaixo, de <a href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#entrada">Entrada</a> e <a href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#sa%C3%ADda">Saída</a>,
+descrevem os formatos de entrada e saída, mas você
+não precisa se preocupar com eles.</p>
+<h4></h4>
+<p>A primeira linha da entrada contém um inteiro <code>n</code>, o número de cidades no banco de dados. A seguir temos <code>n</code> linhas descrevendo cada uma das cidades. Cada linha contém 5 números: <code>x</code>, <code>y</code>, <code>inicio CEP</code>, <code>fim CEP</code> e <code>numero de habitantes</code>. <code>x</code> e <code>y</code> descrevem as coordenadas da cidade e <code>inicio CEP</code> e <code>fim CEP</code> indicam a faixa de CEPs atribuída à cidade. Após as <code>n</code> linhas, a entrada contém um inteiro <code>q</code>, o número de consultas que serão realizadas. As <code>q</code> linhas seguintes contém a descrição de cada consulta. O primeiro parâmetro é sempre o tipo de consulta que deverá ser executada, e segue a tabela abaixo:</p>
+<ul>
+<li>
+<code>0</code>: busca cidade por CEP</li>
+<li>
+<code>1</code>: busca cidades por raio</li>
+<li>
+<code>2</code>: população total</li>
+<li>
+<code>3</code>: mediana da população</li>
+</ul>
+<p>Os parâmetros seguintes dependem da consulta a ser realizada. Para a consulta <code>0</code>, há apenas um parâmetro adicional, o CEP desejado. Para as demais consultas teremos dois parâmetros adicionais, a cidade referência e o raio da busca.</p>
+<h2></h2>
+<p>A saída conterá o resultado de cada uma das consultas requisitadas na entrada. A primeira linha da saída de cada consulta contém <code>Consulta X</code>, onde <code>X</code> é o número da consulta, começando em 0. A seguir temos a saída específica para cada consulta:</p>
+<ul>
+<li>
+<code>0</code>: <code>Cidade com CEP Y: Z</code> ou <code>Nao ha uma cidade com o CEP Y</code>, onde <code>Y</code> é o CEP recebido na entrada, e <code>Z</code> a cidade que contém tal CEP;</li>
+<li>
+<code>1</code>: primeiramente contém <code>Cidades no raio de R:</code>, onde <code>R</code> é o raio recebido na entrada. A seguir é listada, uma por linha, cada cidade contida no raio desejado, ordenadas por sua distância da cidade referência.</li>
+<li>
+<code>2</code>: <code>Populacao total: A</code>, onde <code>A</code> corresponde à população total calculada</li>
+<li>
+<code>3</code>: <code>Mediana da populacao: M</code>, onde <code>M</code> corresponde à mediana calculada</li>
+</ul>
+<h2>
+<a id="user-content-exemplos" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#exemplos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exemplos</h2>
+<h3>
+<a id="user-content-teste-01" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#teste-01" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Teste 01</h3>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/17/dados/arq01.in">Entrada</a></p>
+<pre><code>36
+456.85 716.02 10000001 10000119 880
+5.05 407.26 10000120 10000196 319
+939.89 846.79 10000197 10000511 736
+307.75 523.13 10000512 10000574 430
+801.17 566.67 10000575 10001398 996
+944.24 760.03 10001399 10001441 409
+145.26 41.35 10001442 10001542 606
+972.14 574.72 10001543 10001839 559
+508.96 833.83 10001840 10001924 960
+629.1 664.73 10001925 10002645 878
+386.13 672.02 10002646 10002986 58
+214.21 665.16 10002987 10003119 455
+552.73 748.62 10003120 10003400 701
+469.68 439.76 10003401 10003465 812
+798.8 905.24 10003466 10003642 120
+903.26 707.57 10003643 10003838 93
+190.94 357.68 10003839 10003988 824
+147.93 6.54 10003989 10004085 501
+162.76 795.82 10004086 10004591 376
+570.51 474.65 10004592 10004705 220
+171.25 399.71 10004706 10004868 932
+544.2 417.19 10004869 10005218 106
+649.77 634.01 10005219 10005230 629
+842.02 261.47 10005231 10005615 626
+673.16 37.05 10005616 10005741 926
+412.65 861.23 10005742 10006335 333
+883.28 998.47 10006336 10006356 536
+353.88 202.23 10006357 10006814 916
+793.37 820.77 10006815 10006874 461
+448.34 707.08 10006875 10007532 538
+674.19 274.34 10007533 10007774 150
+360.29 273.78 10007775 10008501 841
+137.23 604.46 10008502 10008637 809
+968.96 219.83 10008638 10008722 291
+844.91 774.43 10008723 10008763 768
+592.0 225.64 10008764 10008937 345
+4
+3 7 734
+2 15 488
+3 33 863
+2 24 459
+</code></pre>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/17/dados/arq01.res">Saída</a></p>
+<pre><code>Consulta 0:
+Mediana da populacao: 548.5
+Consulta 1:
+Populacao total: 10216
+Consulta 2:
+Mediana da populacao: 582.5
+Consulta 3:
+Populacao total: 5233
+</code></pre>
+<h3>
+<a id="user-content-teste-08" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#teste-08" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Teste 08</h3>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/17/dados/arq08.in">Entrada</a></p>
+<pre><code>39
+389.48 850.95 10000001 10000149 836
+911.37 298.92 10000150 10000153 956
+742.7 361.76 10000154 10000163 437
+811.26 844.03 10000164 10000235 327
+601.54 325.13 10000236 10000691 624
+723.74 774.83 10000692 10000786 136
+492.59 948.28 10000787 10001133 385
+890.9 691.84 10001134 10001236 663
+132.21 803.11 10001237 10001784 176
+776.17 289.26 10001785 10001881 51
+242.63 203.47 10001882 10002844 906
+302.36 657.42 10002845 10003006 146
+576.53 799.97 10003007 10003191 732
+736.69 721.09 10003192 10003254 486
+821.51 950.67 10003255 10003798 781
+628.98 80.08 10003799 10003846 332
+115.79 802.72 10003847 10003878 985
+355.3 205.12 10003879 10004250 774
+222.72 646.47 10004251 10004252 188
+612.51 669.31 10004253 10004346 148
+229.86 73.4 10004347 10004790 358
+391.59 218.62 10004791 10005276 914
+239.15 883.32 10005277 10005497 90
+12.28 428.37 10005498 10005834 795
+450.41 627.59 10005835 10005848 229
+972.08 366.68 10005849 10006541 438
+75.17 101.87 10006542 10006994 332
+799.18 949.53 10006995 10007471 916
+466.85 345.64 10007472 10008430 447
+764.98 715.37 10008431 10009131 554
+682.42 806.12 10009132 10009501 694
+263.99 49.94 10009502 10010166 293
+402.81 721.02 10010167 10010366 531
+374.32 260.67 10010367 10010505 902
+570.7 811.98 10010506 10010621 603
+751.21 67.63 10010622 10010782 591
+201.23 855.36 10010783 10011382 481
+636.33 159.12 10011383 10011683 83
+914.34 480.8 10011684 10012046 445
+14
+3 27 985
+0 10002431
+0 10010385
+0 10008303
+3 20 854
+3 38 737
+2 17 746
+2 30 889
+0 10013333
+0 10002247
+3 38 951
+3 14 855
+1 30 224
+2 13 737
+</code></pre>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/17/dados/arq08.res">Saída</a></p>
+<pre><code>Consulta 0:
+Mediana da populacao: 508.5
+Consulta 1:
+Cidade com CEP 10002431: 10
+Consulta 2:
+Cidade com CEP 10010385: 33
+Consulta 3:
+Cidade com CEP 10008303: 28
+Consulta 4:
+Mediana da populacao: 464.0
+Consulta 5:
+Mediana da populacao: 531.0
+Consulta 6:
+Populacao total: 17356
+Consulta 7:
+Populacao total: 19433
+Consulta 8:
+Nao ha uma cidade com o CEP 10013333
+Consulta 9:
+Cidade com CEP 10002247: 10
+Consulta 10:
+Mediana da populacao: 481.0
+Consulta 11:
+Mediana da populacao: 481.0
+Consulta 12:
+Cidades no raio de 224:
+30
+5
+13
+12
+34
+29
+3
+19
+27
+14
+Consulta 13:
+Populacao total: 17987
+</code></pre>
+<p>Para mais exemplos, consulte os
+<a href="https://susy.ic.unicamp.br:9999/mc102qr/17/dados/testes.html">testes abertos no Susy</a>.</p>
+<h2>
+<a id="user-content-observações" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/17/enunciado.html#observa%C3%A7%C3%B5es" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Observações</h2>
+<ul>
+<li>Você <strong>não deve</strong> submeter o arquivo <code>lab17_main.py</code> para o <em>SuSy</em>, somente o arquivo <code>lab17.py</code> .</li><li>O número máximo de submissões é <strong>10</strong>.</li><li>Para a realização dos testes do SuSy, a execução do código em Python se dará da seguinte forma: (Linux e OSX)
+<code>python3 lab17_main.py</code>.</li><li>Você deve incluir, no início do seu programa, uma breve descrição dos objetivos do programa, da entrada e da saída, além do seu nome e do seu RA.</li>
+<li>Indente corretamente o seu código e inclua comentários no decorrer do seu programa.</li>
+</ul>
+
+    </article>
+
+
+</body></html>

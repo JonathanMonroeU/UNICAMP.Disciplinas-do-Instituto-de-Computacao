@@ -1,0 +1,1 @@
+ld -dynamic-linker /lib64/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/Scrt1.o /usr/lib/x86_64-linux-gnu/crti.o -L/usr/lib64 arquivo1.o arquivo2.o -lc /usr/lib/x86_64-linux-gnu/crtn.o -o saida.x

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html -->
+<html class="gr__susy_ic_unicamp_br"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Laboratório 00</title>        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./Laboratório 00_files/css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./Laboratório 00_files/github-markdown.css">
+    <style>
+        .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+        font-family: 'Noto Sans', sans-serif;
+        }
+        .markdown-body h6 { margin-bottom: 0; }
+        .markdown-body h6 + ul li {
+        display: inline-block;
+        width: 100%;
+        max-width: 426px;
+        vertical-align: top;
+        }
+        .markdown-body h6 + ul li pre {
+          max-height: 400px;
+        }
+    </style>
+</head>
+<body data-gr-c-s-loaded="true">
+    <article class="markdown-body">
+<h3>
+<a id="user-content-instituto-de-computação---unicamp" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#instituto-de-computa%C3%A7%C3%A3o---unicamp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Instituto de Computação - Unicamp</h3>
+<h3>
+<a id="user-content-mc102---algoritmos-e-programação-de-computadores" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#mc102---algoritmos-e-programa%C3%A7%C3%A3o-de-computadores" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MC102 - Algoritmos e Programação de Computadores</h3>
+<h1>
+<a id="user-content-laboratório-id---title" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#laborat%C3%B3rio-id---title" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Laboratório 00 - O Sistema SuSy</h1><p>Prazo de entrega: <strong>22/03/2019 23:59:59</strong></p><p>Peso: <strong>0</strong></p>
+<p><em>Professor:</em> Eduardo C. Xavier<br>
+<em>Monitor:</em> Brenner Humberto Ojeda Rios</p>
+<hr>
+<h2>
+<a id="user-content-descrição" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#descri%C3%A7%C3%A3o" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Descrição</h2>
+<p>SuSy (<strong>Su</strong>bmission and Testing <strong>Sy</strong>stem for Student Programs) é um sistema de submissão e testes automatizados de programas de alunos. Seus objetivos principais são:</p>
+<ul>
+<li>
+<p>simplificar a tarefa de recebimento e de testes de programas de alunos;</p>
+</li>
+<li>
+<p>facilitar as atividades dos alunos através de comunicação pela Internet.</p>
+</li>
+</ul>
+<p>Usando este sistema, os alunos podem desenvolver as suas atividades em qualquer local contanto que tenham acesso à Internet, sem a necessidade de presença física do aluno numa sala específica.
+Nesta disciplina, você deve resolver os problemas propostos implementando programas na linguagem C.
+Uma vez pronto, você deve submeter o código deste programa na página do problema no SuSy.</p>
+<p>O SuSy irá compilar o programa e testá-lo usando as entradas fornecidas na página do laboratório (arquivos <code>*.in</code> do link Testes).
+Depois, irá comparar as saídas produzidas pelo programa com os resultados esperados (arquivos <code>*.res</code> do link Testes).
+Se os resultados forem idênticos aos esperados, o seu programa será considerado correto.</p>
+<p>Neste laboratório de introdução, você deverá copiar o programa passado em sala de aula e submetê-lo no SuSy.
+Tente entender o programa, testar as entradas e verificar as saídas.
+Este entendimento será muito importante para que você consiga executar os próximos laboratórios.</p>
+<h2>
+<a id="user-content-tarefa" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#tarefa" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tarefa</h2>
+<p>Estude e copie o programa projetado no laboratório em um arquivo <code>lab00.py</code> e faça a submissão desse arquivo no SuSy na tarefa 00 de sua turma. Compreenda e pratique o processo utilizado nos laboratórios para não ter problemas em laboratórios futuros.</p><h2>
+<a id="user-content-exemplos" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#exemplos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exemplos</h2>
+<h3>
+<a id="user-content-teste-01" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#teste-01" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Teste 01</h3>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/00/dados/arq01.in">Entrada</a></p>
+<pre><code>0
+10
+
+</code></pre>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/00/dados/arq01.res">Saída</a></p>
+<pre><code>Entre com dois inteiros
+Soma = 10
+Diferenca = -10
+Multiplicacao = 0
+Divisao Inteira = 0
+Divisao = 0.00
+</code></pre>
+<h3>
+<a id="user-content-teste-02" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#teste-02" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Teste 02</h3>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/00/dados/arq02.in">Entrada</a></p>
+<pre><code>0
+1000
+
+
+</code></pre>
+<p><a href="https://susy.ic.unicamp.br:9999/mc102qr/00/dados/arq02.res">Saída</a></p>
+<pre><code>Entre com dois inteiros
+Soma = 1000
+Diferenca = -1000
+Multiplicacao = 0
+Divisao Inteira = 0
+Divisao = 0.00
+</code></pre>
+<p>Para mais exemplos, consulte os <a href="https://susy.ic.unicamp.br:9999/mc102qr/00/dados/testes.html">testes abertos no Susy</a>.</p>
+<h2>
+<a id="user-content-observações" class="anchor" href="https://susy.ic.unicamp.br:9999/mc102qr/00/enunciado.html#observa%C3%A7%C3%B5es" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Observações</h2>
+<ul>
+<li>O número máximo de submissões é <strong>10</strong>;</li><li>O seu programa deve estar completamente contido em um único arquivo denominado <code>lab00.py</code>;</li><li>Para a realização dos testes do SuSy, a compilação dos programas desenvolvidos em C irá considerar o comando:<br>
+<code>python lab00.c</code>;</li><li>Você deve incluir, no início do seu programa, o seu nome e o seu RA;</li>
+<li>Indente corretamente o seu código e inclua comentários no decorrer do seu programa.</li>
+</ul>
+
+    </article>
+
+
+</body></html>
